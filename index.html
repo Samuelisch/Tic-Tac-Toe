@@ -20,16 +20,16 @@
                             <input type="text" id="player-one-name" name="name" placeholder="Player name..">
                             <div class="is-human">
                                 <label for="human">Human</label>
-                                <input type="radio" id="human" name="is-human" value="true" checked disabled>
+                                <input type="radio" id="human" name="is-human-1" value="true" checked disabled>
                             </div>
 
                             <div class="difficulty"></div> <!-- Remain same calibration as other side-->
                             
                             <div class="symbols">
-                                <div class="symbol x symbol-toggle">
+                                <div class="symbol symbol-toggle" data-value="x">
                                     <i class="fas fa-times fa-2x"></i>
                                 </div>
-                                <div class="symbol o">
+                                <div class="symbol" data-value="o">
                                     <i class="far fa-circle fa-2x"></i>
                                 </div>
                             </div>
@@ -41,47 +41,50 @@
                             <div class="is-human">
                                 <div>
                                     <label for="human">Human</label>
-                                    <input type="radio" id="human" name="is-human" value="true">
+                                    <input type="radio" id="human" name="is-human-2" value="true" checked>
                                 </div>
                                 <div>
                                     <label for="ai">AI</label>
-                                    <input type="radio" id="ai" name="is-human" value="false" checked>
+                                    <input type="radio" id="ai" name="is-human-2" value="false">
                                 </div>
                             </div>
 
                             <div class="difficulty">
                                 <div class="diff-select">
                                     <label for="easy">Easy</label>
-                                    <input type="radio" id="easy" name="easy" value="easy" checked>
+                                    <input type="radio" id="easy" name="difficulty" value="easy">
                                 </div>
                                 <div class="diff-select">
                                     <label for="hard">Hard</label>
-                                    <input type="radio" id="hard" name="hard" value="hard">
+                                    <input type="radio" id="hard" name="difficulty" value="hard" checked>
                                 </div>
                                 <div class="diff-select">
                                     <label for="insane">Insane</label>
-                                    <input type="radio" id="insane" name="insane" value="insane">
+                                    <input type="radio" id="insane" name="difficulty" value="insane">
                                 </div>
                             </div>
 
                             <div class="symbols">
-                                <div class="symbol x">
+                                <div class="symbol" data-value="x">
                                     <i class="fas fa-times fa-2x"></i>
                                 </div>
-                                <div class="symbol o symbol-toggle">
+                                <div class="symbol symbol-toggle" data-value="o">
                                     <i class="far fa-circle fa-2x"></i>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <button id="form-submit" type="button">Let's play already!</button>
+                    <button id="form-submit" type="button">Let's play!</button>
                 </form>
             </div>
         </div>
 
         <main id="main-content">
             <h1>Some shit here</h1>
+            <button id="configure" type="button">Configure</button>
         </main>
+
+        <script src="js/script.js"></script>
     </body>
 </html>

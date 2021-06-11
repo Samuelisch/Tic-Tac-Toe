@@ -8,6 +8,7 @@ body {
     font-size: 10px;
     line-height: 1.7;
     color: var(--black);
+    overflow-y: hidden;
 }
 
 h1 {
@@ -18,12 +19,18 @@ h1 {
     position: absolute;
     display: flex;
     justify-content: center;
-    z-index: 5;
+    border-bottom: 1px solid black;
+    z-index: 2;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(255,250,250, 0.9);
+    transition: transform .7s ease-in;
+}
+
+.hide-front-page {
+    transform: translateY(-100%);
 }
 
 #start-container::before { /* div to tie start-container's margin to height of browser window */
@@ -88,7 +95,7 @@ h1 {
 }
 
 .difficulty {
-    display: flex;
+    display: none;
     width: 100%;
     height: 40px;
     justify-content: space-evenly;
@@ -130,4 +137,20 @@ h1 {
 
 #form-submit:active {
     box-shadow: none;
+}
+
+#main-content {
+    z-index: 1;
+}
+
+@media (min-width: 375px) {
+    .symbols {
+        width: 40%;
+    }
+}
+
+@media (min-width: 750px) {
+    .symbols {
+        width: 30%;
+    }
 }
