@@ -27,10 +27,10 @@
                             
                             <div class="symbols">
                                 <div class="symbol symbol-toggle" data-value="x">
-                                    <i class="fas fa-times fa-2x"></i>
+                                    <i class="fas fa-times fa-2x" data-value="x"></i>
                                 </div>
                                 <div class="symbol" data-value="o">
-                                    <i class="far fa-circle fa-2x"></i>
+                                    <i class="far fa-circle fa-2x" data-value="o"></i>
                                 </div>
                             </div>
                         </div>
@@ -41,11 +41,11 @@
                             <div class="is-human">
                                 <div>
                                     <label for="human">Human</label>
-                                    <input type="radio" id="human" name="is-human-2" value="true" checked>
+                                    <input type="radio" id="human" name="is-human-2" checked>
                                 </div>
                                 <div>
                                     <label for="ai">AI</label>
-                                    <input type="radio" id="ai" name="is-human-2" value="false">
+                                    <input type="radio" id="ai" name="is-human-2">
                                 </div>
                             </div>
 
@@ -66,10 +66,10 @@
 
                             <div class="symbols">
                                 <div class="symbol" data-value="x">
-                                    <i class="fas fa-times fa-2x"></i>
+                                    <i class="fas fa-times fa-2x" data-value="x"></i>
                                 </div>
                                 <div class="symbol symbol-toggle" data-value="o">
-                                    <i class="far fa-circle fa-2x"></i>
+                                    <i class="far fa-circle fa-2x" data-value="o"></i>
                                 </div>
                             </div>
                         </div>
@@ -81,8 +81,34 @@
         </div>
 
         <main id="main-content">
-            <h1>Some shit here</h1>
-            <button id="configure" type="button">Configure</button>
+            <header>
+                <div id="info-container">
+                    <div class="player-info">
+                        <div class="info-display first-name"></div>
+                        <div class="first-symbol-display"></div>
+                    </div>
+                    <div class="player-info">
+                        <div class="info-display second-name"></div>
+                        <div class="second-symbol-display"></div>
+                    </div>
+                </div>
+                <button id="configure" type="button">Configure</button>
+            </header>
+
+            <div class="grid-container">
+                <div class="game-grid">
+                    <div>1</div>
+                    <div>2</div>
+                    <div>3</div>
+                    <div>4</div>
+                    <div>5</div>
+                    <div>6</div>
+                    <div>7</div>
+                    <div>8</div>
+                    <div>9</div>
+                </div>
+            </div>
+
         </main>
 
         <script src="js/script.js"></script>

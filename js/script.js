@@ -1,13 +1,19 @@
 //selectors for start page
 const startPage = document.getElementById('front-wrapper');
-const playerOne = document.querySelector('.player-one');
-const playerTwo = document.querySelector('.player-two');
+const playerOneNode = document.querySelector('.player-one');
+const playerTwoNode = document.querySelector('.player-two');
 const playerOneName = document.getElementById('player-one-name');
 const playerTwoName = document.getElementById('player-two-name');
-const playerOneSymbols = playerOne.querySelector('.symbols');
-const playerTwoSymbols = playerTwo.querySelector('.symbols');
+const playerOneSymbols = playerOneNode.querySelector('.symbols');
+const playerTwoSymbols = playerTwoNode.querySelector('.symbols');
 
 const submitBtn = document.getElementById('form-submit');
+
+//selectors for main page
+const firstNameDisplay = document.querySelector('.first-name');
+const firstSymbolDisplay = document.querySelector('.first-symbol-display');
+const secondNameDisplay = document.querySelector('.second-name');
+const secondSymbolDisplay = document.querySelector('.second-symbol-display');
 
 //selectors for main page
 const configureBtn = document.getElementById('configure');
@@ -22,12 +28,12 @@ function toggleDifficulty(e) {
 }
 
 function toggleSymbolsOne(e) {
-    const times = playerOne.querySelector('.fa-times');
-    const circle = playerOne.querySelector('.fa-circle');
-    const x = playerOne.querySelector('.symbol[data-value="x"]');
-    const o = playerOne.querySelector('.symbol[data-value="o"]');
-    const xTwo = playerTwo.querySelector('.symbol[data-value="x"]');
-    const oTwo = playerTwo.querySelector('.symbol[data-value="o"]');
+    const times = playerOneNode.querySelector('.fa-times');
+    const circle = playerOneNode.querySelector('.fa-circle');
+    const x = playerOneNode.querySelector('.symbol[data-value="x"]');
+    const o = playerOneNode.querySelector('.symbol[data-value="o"]');
+    const xTwo = playerTwoNode.querySelector('.symbol[data-value="x"]');
+    const oTwo = playerTwoNode.querySelector('.symbol[data-value="o"]');
 
     if (e.target == times) {
         if (x.classList.contains('symbol-toggle')) return;
@@ -45,12 +51,12 @@ function toggleSymbolsOne(e) {
 }
 
 function toggleSymbolsTwo(e) {
-    const times = playerTwo.querySelector('.fa-times');
-    const circle = playerTwo.querySelector('.fa-circle');
-    const x = playerOne.querySelector('.symbol[data-value="x"]');
-    const o = playerOne.querySelector('.symbol[data-value="o"]');
-    const xTwo = playerTwo.querySelector('.symbol[data-value="x"]');
-    const oTwo = playerTwo.querySelector('.symbol[data-value="o"]');
+    const times = playerTwoNode.querySelector('.fa-times');
+    const circle = playerTwoNode.querySelector('.fa-circle');
+    const x = playerOneNode.querySelector('.symbol[data-value="x"]');
+    const o = playerOneNode.querySelector('.symbol[data-value="o"]');
+    const xTwo = playerTwoNode.querySelector('.symbol[data-value="x"]');
+    const oTwo = playerTwoNode.querySelector('.symbol[data-value="o"]');
 
     if (e.target == times) {
         if (xTwo.classList.contains('symbol-toggle')) return;
@@ -82,21 +88,26 @@ function displayForm() {
     if (!playerTwoName.value) {
         playerTwoName.value = "Player2";
     }
-    let play1 = {
-        name: playerOneName.value,
-        isHuman: true, //private method in factory function
-        difficulty: null, //private method in factory function
-        actionSymbol: playerOne.querySelector('.symbol-toggle').dataset.value
-    };
-    let play2 = {
-        name: playerTwoName.value,
-        isHuman: playerTwo.querySelector('input[name="is-human-2"]:checked').value, //private method
-        difficulty: playerTwo.querySelector('input[name="difficulty"]:checked').value, //private method
-        actionSymbol: playerTwo.querySelector('.symbol-toggle').dataset.value
+    const playerOne = playerFactory(playerOneName.value, true, undefined, playerOneNode.querySelector('.symbol-toggle').firstElementChild);
+    const playerTwo = playerFactory(playerTwoName.value, playerTwoNode.querySelector('input[name="is-human-2"]:checked').id == "human", playerTwoNode.querySelector('input[name="difficulty"]:checked').value, playerTwoNode.querySelector('.symbol-toggle').firstElementChild);
+
+    firstNameDisplay.textContent = playerOne.name;
+    firstSymbolDisplay.appendChild(playerOne.actionSymbol);
+    secondNameDisplay.textContent = playerTwo.name;
+    secondNameDisplay.appendChild(playerTwo.actionSymbol);
+
+    console.log(playerOne, playerTwo);
+}
+
+//creating instances from playerFactory
+const playerFactory = (name, isHuman, difficulty, actionSymbol) => {
+    if (isHuman == true) {
+        difficulty = undefined;
     };
 
-    console.log(play1, play2);
-}
+    return {name, isHuman, difficulty, actionSymbol};
+};
+
 /*test for click event
 window.addEventListener('click', clicked);
 function clicked(e) {
@@ -104,7 +115,7 @@ function clicked(e) {
 }
 */
 
-playerTwo.querySelectorAll('input[name="is-human-2"]').forEach(input => input.addEventListener('click', toggleDifficulty));
+playerTwoNode.querySelectorAll('input[name="is-human-2"]').forEach(input => input.addEventListener('click', toggleDifficulty));
 submitBtn.addEventListener('click', displayForm);
 configureBtn.addEventListener('click', toggleDisplay);
 playerOneSymbols.addEventListener('click', toggleSymbolsOne);
