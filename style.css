@@ -1,6 +1,7 @@
 :root {
     --black: rgb(20, 20, 20);
-    --white: rgb(206, 180, 180);
+    --beige: rgb(206, 180, 180);
+    --white: rgb(250, 250, 250);
 }
 
 html,
@@ -26,7 +27,7 @@ h1 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255,250,250, 0.9);
+    background: var(--white);
     transition: transform .7s ease-in;
 }
 
@@ -141,11 +142,12 @@ h1 {
 }
 
 #main-content {
+    position: absolute;
     z-index: 1;
     font-family: Arial, Helvetica, sans-serif;
-    height: 100vh;
+    height: 100%;
     width: 100%;
-    background-color: var(--white);
+    background-color: var(--beige);
 }
 
 header {
@@ -176,25 +178,45 @@ header > * {
 }
 
 .game-grid {
+    width: 270px;
+    height: 270px;
     display: grid;
-    grid-template-columns: repeat(3, 100px);
-    grid-template-rows: repeat(3, 100px);
-    grid-gap: 1px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    grid-gap: 2px;
+    padding: 1px;
     background-color: black;
 }
 
 .game-grid > * {
-    background-color: var(--white);
+    background-color: var(--beige);
 }
 
 @media (min-width: 375px) {
     .symbols {
         width: 40%;
     }
+
+    .game-grid {
+        height: 300px;
+        width: 300px;
+    }
 }
 
 @media (min-width: 750px) {
     .symbols {
         width: 30%;
+    }
+
+    .game-grid {
+        height: 400px;
+        width: 400px;
+    }
+}
+
+@media (min-width: 900px) {
+    .game-grid {
+        height: 500px;
+        width: 500px;
     }
 }
