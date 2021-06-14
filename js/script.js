@@ -113,9 +113,21 @@ const playerFactory = (name, isHuman, difficulty, actionSymbol) => {
 };
 
 //create IIFE for game grid
-const gameGrid = () => {
+const gameGrid = () => (function() {
+    let createGame = function() {
+        console.log('This will create divs and push it to game-grid');
+    }
 
-}
+    let clearGame = function() {
+        console.log('This will delete all cells from game-grid');
+    }
+
+    let newGame = function() {
+        console.log('This will reset the finished game, and create a new game');
+    }
+
+    return (newGame());
+})();
 
 /*test for click event
 window.addEventListener('click', clicked);

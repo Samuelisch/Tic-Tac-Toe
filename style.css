@@ -142,7 +142,6 @@ h1 {
 }
 
 #main-content {
-    position: absolute;
     z-index: 1;
     font-family: Arial, Helvetica, sans-serif;
     height: 100%;
@@ -150,11 +149,11 @@ h1 {
     background-color: var(--beige);
 }
 
-header {
+.header {
     padding: 20px;
 }
 
-header > * {
+.header > * {
     margin: 10px;
 }
 
@@ -215,6 +214,15 @@ header > * {
 }
 
 @media (min-width: 900px) {
+    .header {
+        position: absolute;
+        display: inline-block;
+    }
+
+    .grid-container {
+        padding: 50px;
+    }
+
     .game-grid {
         height: 500px;
         width: 500px;
