@@ -12,14 +12,10 @@ const submitBtn = document.getElementById('form-submit');
 //IIFE for main page display
 const displayNameSymbol = (playerOne, playerTwo) => (function(playerOne, playerTwo) {
     const firstNameDisplay = document.querySelector('.first-name');
-    const firstSymbolDisplay = document.querySelector('.first-symbol-display');
     const secondNameDisplay = document.querySelector('.second-name');
-    const secondSymbolDisplay = document.querySelector('.second-symbol-display');
 
     firstNameDisplay.textContent = playerOne.name;
-    firstSymbolDisplay.appendChild(playerOne.actionSymbol);
     secondNameDisplay.textContent = playerTwo.name;
-    secondSymbolDisplay.appendChild(playerTwo.actionSymbol);
 })(playerOne, playerTwo);
 
 //selectors for main page
@@ -129,12 +125,11 @@ const gameGrid = () => (function() {
     return (newGame());
 })();
 
-/*test for click event
+//test for click event
 window.addEventListener('click', clicked);
 function clicked(e) {
     console.log(e.target);
 }
-*/
 
 playerTwoNode.querySelectorAll('input[name="is-human-2"]').forEach(input => input.addEventListener('click', toggleDifficulty));
 submitBtn.addEventListener('click', displayForm);
