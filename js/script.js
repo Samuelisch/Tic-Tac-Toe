@@ -49,9 +49,11 @@ const game = (() => {
 
     //set flags for player turns
 
-    //set action functions for each click event
+    //create winning combinations
 
-    //check if winning condition reached (winning condition in array)
+    //set action functions for each click event / player action to array (player.action(cellnum)
+
+    //check if winning condition reached (winning condition in array) (after player action / bot action)
     
 })();
 
