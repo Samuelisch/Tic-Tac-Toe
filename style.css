@@ -1,0 +1,20 @@
+:root {
+    --white: rgb(245, 245, 245);
+}
+
+body {
+    background: var(--white);
+    font-size: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-box {
+    background: grey;
+    width: 400px;
+    height: 400px;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+}
