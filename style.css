@@ -1,5 +1,6 @@
 :root {
-    --white: rgb(245, 245, 245);
+    --white: rgb(233, 233, 233);
+    --black: rgb(37, 37, 37);
 }
 
 body {
@@ -11,10 +12,23 @@ body {
 }
 
 .game-box {
-    background: grey;
-    width: 400px;
-    height: 400px;
+    width: 306px;
+    height: 306px;
     margin: auto;
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
+    border: 1px solid var(--black);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    border: 1px solid var(--black);
+    background: var(--white);
+}
+
+.cell:hover {
+    background: rgb(198, 220, 230);
 }

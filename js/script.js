@@ -1,5 +1,4 @@
-let userName = 'Samuel';
-let symbol = 'X';
+const gameBox = document.querySelector('.game-box');
 
 const createPlayer = ({name, symbol}) => ({
     name,
@@ -27,7 +26,9 @@ const createPlayer = ({name, symbol}) => ({
 const gameBoard = (() => {
     const start = function() {
         console.log(`Game start!`);
-        //manipulate DOM
+        for (let i = 0; i < 9; i++) {
+            gameBox.innerHTML += `<div class="cell" id="${i}"></div>`;
+        }
     }
 
     const reset = function() {
@@ -44,7 +45,7 @@ const gameBoard = (() => {
 
 //game Module to create players, and have game flow.
 const game = (() => {
-    let player1 = createPlayer({name: userName, symbol: symbol});
+    let player1 = createPlayer({name: 'Player1', symbol: 'X'});
     console.log(player1);
 
     //set flags for player turns
