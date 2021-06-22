@@ -32,6 +32,8 @@ const game = (() => {
 
     //set flags for player turns
     playerOneFlag = true;
+    winFlag = false;
+
     function turn(player) {
         text.textContent = `${player.name}'s turn!`
     }
@@ -47,6 +49,54 @@ const game = (() => {
         }
     }
 
+    //set action functions for each click event / player action to array (player.action(cellnum)
+    function clicked(e) {
+        const cell = e.target;
+
+        //ignore if game is won or clicked on filled cell
+        if (winFlag || cell.textContent) {
+            return;
+        }
+        
+        let player = player1;
+        if (!playerOneFlag) {
+            player = player2;
+        }
+        //adds player symbol into grid cell, pushes cell id into array, and checks for win
+        cell.textContent = player.symbol;
+        player.array.push(parseInt(cell.id));
+        console.log(player.array);
+        //checks for winning condition
+        if (gameBoard.isWon(player) || gameBoard.isTie()) {
+            return;
+        }
+        
+        //function for next turn
+        nextPlayerTurn();
+    }
+
+
+    //check if winning condition reached (winning condition in array) (after player action / bot action)
+    
+
+    return {clicked, winFlag}
+})();
+
+//module to create, reset and fill the grid for the game
+const gameBoard = (() => {
+    const start = function() {
+        for (let i = 0; i < 9; i++) {
+            gameBox.innerHTML += `<div class="cell" id="${i}"></div>`;
+        }
+        const cells = document.querySelectorAll('.cell');
+        cells.forEach(cell => cell.addEventListener('click', game.clicked));
+    }
+
+    const reset = function() {
+        console.log('Resetting game...');
+        //manipulate DOM
+    }
+
     //create winning combinations
     const win = 
     [
@@ -60,69 +110,29 @@ const game = (() => {
         [6, 7, 8]
     ];
 
-    function won(player) {
+    //check if winning condition reached
+    function isWon(player) {
         for (let i = 0; i < win.length; i++) {
             if (win[i].every(num => player.array.includes(num))) {
+                text.textContent = `${player.name} won!`;
+                winFlag = true;
                 return true;
             }
         }
         return false;
     }
 
-    //set action functions for each click event / player action to array (player.action(cellnum)
-    function clicked(e) {
-        const cell = e.target;
-        let player = player1;
-        if (!playerOneFlag) {
-            player = player2;
-        }
-
-        if (cell.textContent) {
-            return; // returns if clicked on filled cell
-        }
-        //adds player symbol into grid cell, pushes cell id into array, and checks for win
-        cell.textContent = player.symbol;
-        player.array.push(parseInt(cell.id));
-        console.log(player.array);
-        //checks for winning condition
-        if (won(player)) {
-            console.log(`${player.name} won!`)
-            return;
-        }
-        
-        //function for next turn
-        nextPlayerTurn();
-    }
-
-
-    //check if winning condition reached (winning condition in array) (after player action / bot action)
-    
-
-    return {clicked, win}
-})();
-
-//module to create, reset and fill the grid for the game
-const gameBoard = (() => {
-    const start = function() {
-        console.log(`Game start!`);
-        for (let i = 0; i < 9; i++) {
-            gameBox.innerHTML += `<div class="cell" id="${i}"></div>`;
-        }
-        console.log(`Generated grid area`);
-        const cells = document.querySelectorAll('.cell');
-        cells.forEach(cell => cell.addEventListener('click', game.clicked));
-    }
-
-    const reset = function() {
-        console.log('Resetting game...');
-        //manipulate DOM
-    }
-
-    //check if winning condition reached
-
     //if all squares filled and no winning condition, declare tie
+    function isTie() {
+        const cells = document.querySelectorAll('.cell');
+        if (Array.from(cells).every(cell => cell.textContent) && !winFlag) {
+            text.textContent = "It's a tie!";
+            return true;
+        }
+        return false;
+    }
 
-    return{start, reset};
+    return{start, reset, isWon, isTie};
 })();
 
 gameBoard.start();

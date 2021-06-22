@@ -18,8 +18,17 @@ body {
     justify-content: center;
 }
 
+.base {
+    position: relative;
+    height: 100px;
+    width: 200px;
+}
+
 .text {
+    position: absolute;
+    top: 50%; bottom: 0; left: 0; right: 0;
     font-size: 2rem;
+    text-align: center;
 }
 
 .game-box {
@@ -49,3 +58,4 @@ body {
 .cell:hover {
     background: rgb(198, 220, 230);
 }
+
