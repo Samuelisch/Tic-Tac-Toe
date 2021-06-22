@@ -63,7 +63,6 @@ const game = (() => {
     function won(player) {
         for (let i = 0; i < win.length; i++) {
             if (win[i].every(num => player.array.includes(num))) {
-                console.log('win');
                 return true;
             }
         }
@@ -73,31 +72,23 @@ const game = (() => {
     //set action functions for each click event / player action to array (player.action(cellnum)
     function clicked(e) {
         const cell = e.target;
+        let player = player1;
+        if (!playerOneFlag) {
+            player = player2;
+        }
 
         if (cell.textContent) {
-            console.log('cell is filled');
             return; // returns if clicked on filled cell
         }
-        console.log(playerOneFlag);
-        //checks player flag for symbol input, adds cell id into player array
-        if (playerOneFlag) {
-            cell.textContent = player1.symbol;
-            player1.array.push(parseInt(cell.id));
-            console.log(player1.array);
-            if (won(player1)) {
-                console.log('player1 won!')
-                return;
-            }
-        } else {
-            cell.textContent = player2.symbol;
-            player2.array.push(parseInt(cell.id));
-            console.log(player2.array);
-            if (won(player2)) {
-                console.log('player2 won!')
-                return;
-            }
-        }
+        //adds player symbol into grid cell, pushes cell id into array, and checks for win
+        cell.textContent = player.symbol;
+        player.array.push(parseInt(cell.id));
+        console.log(player.array);
         //checks for winning condition
+        if (won(player)) {
+            console.log(`${player.name} won!`)
+            return;
+        }
         
         //function for next turn
         nextPlayerTurn();
