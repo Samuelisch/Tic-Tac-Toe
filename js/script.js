@@ -61,14 +61,13 @@ const game = (() => {
     ];
 
     function won(player) {
-        const array = [...player.array];
-        console.log(array);
         for (let i = 0; i < win.length; i++) {
-            if (win[i].every(num => array.includes(num))) {
+            if (win[i].every(num => player.array.includes(num))) {
+                console.log('win');
                 return true;
             }
-            return false;
         }
+        return false;
     }
 
     //set action functions for each click event / player action to array (player.action(cellnum)
@@ -79,6 +78,7 @@ const game = (() => {
             console.log('cell is filled');
             return; // returns if clicked on filled cell
         }
+        console.log(playerOneFlag);
         //checks player flag for symbol input, adds cell id into player array
         if (playerOneFlag) {
             cell.textContent = player1.symbol;
@@ -107,7 +107,7 @@ const game = (() => {
     //check if winning condition reached (winning condition in array) (after player action / bot action)
     
 
-    return {clicked}
+    return {clicked, win}
 })();
 
 //module to create, reset and fill the grid for the game
