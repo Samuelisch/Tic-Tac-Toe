@@ -30,8 +30,6 @@ const createPlayer = ({name, symbol}) => ({
 const game = (() => {
     let player1 = createPlayer({name: 'Player1', symbol: 'X'});
     let player2 = createPlayer({name: 'Player2', symbol: 'O'});
-    console.log(player1);
-    console.log(player2);
 
     //set flags for player turns
     playerOneFlag = true;
