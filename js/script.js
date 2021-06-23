@@ -81,22 +81,29 @@ const game = (() => {
     //check if winning condition reached (winning condition in array) (after player action / bot action)
     
 
-    return {clicked, gameEnd}
+    return {player1, player2, clicked, gameEnd}
 })();
 
 //module to create, reset and fill the grid for the game
 const gameBoard = (() => {
+    const restart = document.querySelector('.restart-btn');
+    
+    //function to start game
     function start() {
         for (let i = 0; i < 9; i++) {
             gameBox.innerHTML += `<div class="cell" id="${i}"></div>`;
         }
         const cells = document.querySelectorAll('.cell');
         cells.forEach(cell => cell.addEventListener('click', game.clicked));
-    }
+    };
 
     function reset() {
         console.log('Resetting game...');
-        //manipulate DOM
+        gameBox.innerHTML = '';
+        gameEnd = false;
+        game.player1.array = [];
+        game.player2.array = [];
+        start();
     }
 
     //create winning combinations
@@ -131,7 +138,9 @@ const gameBoard = (() => {
         }
     }
 
-    return{start, reset, isWon, isTie};
+    restart.addEventListener('click', reset);
+
+    return{start, isWon, isTie};
 })();
 
 gameBoard.start();
