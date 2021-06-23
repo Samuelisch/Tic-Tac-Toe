@@ -1,5 +1,8 @@
 const text = document.querySelector('.text');
 const gameBox = document.querySelector('.game-box');
+const submitBtn = document.querySelector('.submit-btn');
+const configBtn = document.querySelector('.configure-btn');
+const form = document.querySelector('form');
 
 const createPlayer = ({name, symbol}) => ({
     name,
@@ -64,8 +67,7 @@ const game = (() => {
         }
         //adds player symbol into grid cell, pushes cell id into array, and checks for win
         cell.textContent = player.symbol;
-        player.array.push(parseInt(cell.id));
-        console.log(player.array);
+        player.action(parseInt(cell.id));
         //checks for winning condition
         gameBoard.isWon(player);
         gameBoard.isTie(player);
@@ -81,7 +83,7 @@ const game = (() => {
     //check if winning condition reached (winning condition in array) (after player action / bot action)
     
 
-    return {player1, player2, clicked, gameEnd}
+    return {player1, player2, clicked, gameEnd, turn}
 })();
 
 //module to create, reset and fill the grid for the game
@@ -98,12 +100,12 @@ const gameBoard = (() => {
     };
 
     function reset() {
-        console.log('Resetting game...');
         gameBox.innerHTML = '';
         gameEnd = false;
         game.player1.array = [];
         game.player2.array = [];
         start();
+        game.turn(game.player1);
     }
 
     //create winning combinations
@@ -123,7 +125,7 @@ const gameBoard = (() => {
     function isWon(player) {
         for (let i = 0; i < win.length; i++) {
             if (win[i].every(num => player.array.includes(num))) {
-                text.textContent = `${player.name} won!`;
+                text.textContent = `${player.win()}`;
                 gameEnd = true;
             }
         }
@@ -140,7 +142,24 @@ const gameBoard = (() => {
 
     restart.addEventListener('click', reset);
 
-    return{start, isWon, isTie};
+    return{start, reset, isWon, isTie};
 })();
 
+function formSubmit(e) {
+    e.preventDefault();
+    form.classList.toggle('display-form');
+    const playerOneName = document.getElementById('name1').value;
+    const playerTwoName = document.getElementById('name2').value;
+    game.player1.name = playerOneName;
+    game.player2.name = playerTwoName;
+    gameBoard.reset();
+}
+
+function dropForm() {
+    form.classList.toggle('display-form');
+}
+
 gameBoard.start();
+
+submitBtn.addEventListener('click', formSubmit);
+configBtn.addEventListener('click', dropForm);

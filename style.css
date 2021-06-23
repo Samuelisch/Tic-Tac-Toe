@@ -17,7 +17,6 @@ body {
 }
 
 header {
-    width: 100%;
     background-color: var(--black);
     color: var(--white);
     padding: 1rem;
@@ -29,8 +28,30 @@ h2 {
     margin: 0;
 }
 
-.form {
-    
+form {
+    background-color:rgba(198, 220, 230, 0.5);
+    margin: auto;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--black);
+    padding: 5px;
+}
+
+.display-form {
+    display: flex;
+}
+
+.player {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    font-size: .8rem;
+}
+
+input[name="player-name"] {
+    width: 50%;
 }
 
 .configure-btn {
@@ -39,8 +60,16 @@ h2 {
     text-align: center;
     font-size: .8rem;
     border: 1px solid var(--black);
-    border-top: none;
-    background-color: rgb(198, 220, 230);
+    border-top: 1px solid rgba(198, 220, 230, 0.5);
+    background-color: rgba(198, 220, 230, 0.5);
+}
+
+.configure-btn:hover {
+    background: rgba(198, 220, 230, 0.9);
+}
+
+.configure-btn:active {
+    background: rgb(198, 220, 230);
 }
 
 main {
@@ -64,8 +93,8 @@ main {
 }
 
 .game-box {
-    width: 306px;
-    height: 306px;
+    width: 246px;
+    height: 246px;
     margin-top: 2rem;
     border: 2px solid var(--black);
     border-radius: 5px;
@@ -76,8 +105,8 @@ main {
 }
 
 .cell {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border: 1px solid var(--black);
     background: var(--white);
     display: flex;
