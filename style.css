@@ -46,7 +46,7 @@ form {
 .player {
     display: flex;
     flex-direction: column;
-    margin-bottom: 2rem;
+    margin: 1rem;
     font-size: .8rem;
 }
 
