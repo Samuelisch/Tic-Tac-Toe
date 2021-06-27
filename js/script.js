@@ -77,10 +77,6 @@ const game = (() => {
         nextPlayerTurn();
     }
 
-
-    //check if winning condition reached (winning condition in array) (after player action / bot action)
-    
-
     return {player1, player2, clicked, gameEnd, turn}
 })();
 
