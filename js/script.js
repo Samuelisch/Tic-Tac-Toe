@@ -153,6 +153,12 @@ const gameBoard = (() => {
     };
 
     function reset() {
+        while (gameArray.length) {
+            gameArray.shift();
+        }
+        for (let i = 0; i < 9; i++) {
+            gameArray.push(i);
+        }
         gameBox.innerHTML = '';
         gameEnd = false;
         game.player1.array = [];
