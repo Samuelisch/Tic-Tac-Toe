@@ -31,7 +31,7 @@ h2 {
 form {
     background-color:rgba(198, 220, 230, 0.5);
     margin: auto;
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
