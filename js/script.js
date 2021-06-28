@@ -1,5 +1,4 @@
 const text = document.querySelector('.text');
-let gameEnd = false;
 let playerOneFlag = true;
 
 const createPlayer = ({name, symbol}) => ({
@@ -85,7 +84,7 @@ const game = (() => {
         const index = gameBoard.gameArray.indexOf(parseInt(cell.id));
 
         //ignore if game is won or clicked on filled cell
-        if (gameEnd || cell.textContent) {
+        if (cell.textContent) {
             return;
         }
 
@@ -101,10 +100,10 @@ const game = (() => {
         //checks for winning condition
         if (gameBoard.isWon(player.array)) {
             text.textContent = `${player.win()}`;
-            gameEnd = true;
-        };
+            return;
+        }
 
-        if (gameEnd) {
+        if (gameBoard.isTie()) {
             return;
         }
         
@@ -144,10 +143,10 @@ const game = (() => {
 
         if (gameBoard.isWon(player.array)) {
             text.textContent = `${player.win()}`;
-            gameEnd = true;
-        };
+            return;
+        }
 
-        if (gameEnd) {
+        if (gameBoard.isTie()) {
             return;
         }
         
@@ -186,8 +185,6 @@ const gameBoard = (() => {
         game.player2.array = [];
         //empty html for cells
         gameBox.innerHTML = '';
-        //reinitialise gameEnd
-        gameEnd = false;
         //set game back to first setting upon page load
         playerOneFlag = true;
         game.turn(game.player1);
@@ -215,17 +212,16 @@ const gameBoard = (() => {
                 return true;
             }
         }
-        isTie();
         return false;
     }
 
     //if all squares filled and no winning condition, declare tie
     function isTie() {
-        const cells = document.querySelectorAll('.cell');
-        if (Array.from(cells).every(cell => cell.textContent) && !gameEnd) {
-            text.textContent = "It's a tie!";
-            gameEnd = true;
+        if (!gameArray.length) {
+            text.textContent = "It's a tie!"
+            return true;
         }
+        return false;
     }
 
     restart.addEventListener('click', reset);
