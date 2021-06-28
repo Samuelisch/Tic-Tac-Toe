@@ -1,5 +1,6 @@
 const text = document.querySelector('.text');
 let playerOneFlag = true;
+let botDifficulty = document.querySelector('input[name="difficulty"]:checked').value //easy, medium or hard
 
 const createPlayer = ({name, symbol}) => ({
     name,
@@ -48,8 +49,6 @@ const formBoard = (() => {
 
 //game Module to create players, and have game flow.
 const game = (() => {
-    const botDifficulty = document.querySelector('input[name="difficulty"]:checked').value //easy, medium or hard
-
     function random(arr) {
         const index = Math.floor(Math.random() * arr.length);
         return arr[index];
@@ -65,14 +64,12 @@ const game = (() => {
 
     function nextPlayerTurn() {
         if (playerOneFlag) {
-            console.log('choosing player2')
             playerOneFlag = !playerOneFlag;
             turn(player2);
             if (document.querySelector('#ai').checked) {
                 botTurn();
             }
         } else {
-            console.log('choosing player1')
             playerOneFlag = !playerOneFlag;
             turn(player1);
         }
@@ -125,16 +122,22 @@ const game = (() => {
                 copyPlayArray.push(parseInt(cell.id));
                 //test if move will win
                 if (gameBoard.isWon(copyPlayArray)) {
-                    console.log(`best move to win is cell ${copyArray[i]}`)
                     return document.querySelector(`.cell[id="${copyArray[i]}"]`);
                 }
             }
-            //if no moves found, return random number from array
-            console.log('random move');
-            return document.querySelector(`.cell[id="${random(copyArray)}"]`);
+            //if no winning moves found, block player's winning move if exists (HARD difficulty)
+            return false;
         }
 
-        const cell = selectMove(player, gameBoard.gameArray);
+        //EASY difficulty - if nothing from selectMove, cell will use 'OR' option - random number
+        let cell = selectMove(player, gameBoard.gameArray) || document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
+        //HARD difficulty
+        if (botDifficulty == 'hard') {
+            cell = 
+            selectMove(player, gameBoard.gameArray) 
+            || selectMove(player1, gameBoard.gameArray) //if player1 has option to win, block player1's win
+            || document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
+        }
         const index = gameBoard.gameArray.indexOf(parseInt(cell.id));
 
         cell.textContent = player.symbol;
@@ -188,6 +191,8 @@ const gameBoard = (() => {
         //set game back to first setting upon page load
         playerOneFlag = true;
         game.turn(game.player1);
+        //reset bot difficulty
+        botDifficulty = document.querySelector('input[name="difficulty"]:checked').value
         //start game again
         start();
     }
