@@ -1,5 +1,6 @@
 const text = document.querySelector('.text');
 let gameEnd = false;
+let playerOneFlag = true;
 
 const createPlayer = ({name, symbol}) => ({
     name,
@@ -58,10 +59,6 @@ const game = (() => {
     let player1 = createPlayer({name: 'Player1', symbol: 'X'});
     let player2 = createPlayer({name: 'Player2', symbol: 'O'});
 
-    //set flags for player turns
-    let playerOneFlag = true;
-    
-
     function turn(player) {
         text.textContent = `${player.name}'s turn!`
     }
@@ -69,12 +66,14 @@ const game = (() => {
 
     function nextPlayerTurn() {
         if (playerOneFlag) {
+            console.log('choosing player2')
             playerOneFlag = !playerOneFlag;
             turn(player2);
             if (document.querySelector('#ai').checked) {
                 botTurn();
             }
         } else {
+            console.log('choosing player1')
             playerOneFlag = !playerOneFlag;
             turn(player1);
         }
@@ -124,13 +123,15 @@ const game = (() => {
             //iterate through each move
             for (let i = 0; i < copyArray.length; i++) {
                 const cell = document.querySelector(`.cell[id="${copyArray[i]}"]`);
-                copyPlayArray.push(praseInt(cell.id));
+                copyPlayArray.push(parseInt(cell.id));
                 //test if move will win
                 if (gameBoard.isWon(copyPlayArray)) {
+                    console.log(`best move to win is cell ${copyArray[i]}`)
                     return copyArray[i];
                 }
             }
             //if no moves found, return random number from array
+            console.log('random move');
             return document.querySelector(`.cell[id="${random(copyArray)}"]`);
         }
 
@@ -173,7 +174,25 @@ const gameBoard = (() => {
     };
 
     function reset() {
-        location.reload();
+        //empty gameArray, then repopulate it
+        while (gameArray.length) {
+            gameArray.shift();
+        }
+        for (let i = 0; i < 9; i++) {
+            gameArray.push(i)
+        }
+        //reset player1 and player2 arrays
+        game.player1.array = [];
+        game.player2.array = [];
+        //empty html for cells
+        gameBox.innerHTML = '';
+        //reinitialise gameEnd
+        gameEnd = false;
+        //set game back to first setting upon page load
+        playerOneFlag = true;
+        game.turn(game.player1);
+        //start game again
+        start();
     }
 
     //create winning combinations
