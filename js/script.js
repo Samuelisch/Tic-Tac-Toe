@@ -117,16 +117,16 @@ const game = (() => {
         function selectMove(player, gameArray) {
             //copy existing moves left
             let copyArray = [...gameArray];
-            //copy exisitng player's move
-            let copyPlayArray = [...player.array];
             //iterate through each move
             for (let i = 0; i < copyArray.length; i++) {
+                //copy exisitng player's move
+                let copyPlayArray = [...player.array];
                 const cell = document.querySelector(`.cell[id="${copyArray[i]}"]`);
                 copyPlayArray.push(parseInt(cell.id));
                 //test if move will win
                 if (gameBoard.isWon(copyPlayArray)) {
                     console.log(`best move to win is cell ${copyArray[i]}`)
-                    return copyArray[i];
+                    return document.querySelector(`.cell[id="${copyArray[i]}"]`);
                 }
             }
             //if no moves found, return random number from array
