@@ -1,6 +1,5 @@
 const text = document.querySelector('.text');
 let playerOneFlag = true;
-let botDifficulty = document.querySelector('input[name="difficulty"]:checked').value //easy, medium or hard
 
 const createPlayer = ({name, symbol}) => ({
     name,
@@ -110,6 +109,21 @@ const game = (() => {
 
     function botTurn() {
         const player = player2;
+        const botDifficulty = document.querySelector('input[name="difficulty"]:checked').value //easy, medium or hard
+
+        function difficulty() {
+            if (botDifficulty == 'easy') {
+                console.log('easy');
+                return selectMove(player, gameBoard.gameArray) || document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
+            } else if (botDifficulty == 'hard') {
+                console.log('hard')
+                return selectMove(player, gameBoard.gameArray) 
+                    || selectMove(player1, gameBoard.gameArray) //if player1 has option to win, block player1's win
+                    || document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
+            } else {
+                //impossible
+            }
+        }
 
         function selectMove(player, gameArray) {
             //copy existing moves left
@@ -129,17 +143,9 @@ const game = (() => {
             return false;
         }
 
-        //EASY difficulty - if nothing from selectMove, cell will use 'OR' option - random number
-        let cell = selectMove(player, gameBoard.gameArray) || document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
-        //HARD difficulty
-        if (botDifficulty == 'hard') {
-            cell = 
-            selectMove(player, gameBoard.gameArray) 
-            || selectMove(player1, gameBoard.gameArray) //if player1 has option to win, block player1's win
-            || document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
-        }
+        const cell = difficulty();
         const index = gameBoard.gameArray.indexOf(parseInt(cell.id));
-
+        
         cell.textContent = player.symbol;
         player.action(parseInt(cell.id));
         gameBoard.gameArray.splice(index, 1);
@@ -191,8 +197,6 @@ const gameBoard = (() => {
         //set game back to first setting upon page load
         playerOneFlag = true;
         game.turn(game.player1);
-        //reset bot difficulty
-        botDifficulty = document.querySelector('input[name="difficulty"]:checked').value
         //start game again
         start();
     }
