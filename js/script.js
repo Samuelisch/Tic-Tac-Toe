@@ -98,14 +98,14 @@ const game = (() => {
         cell.textContent = player.symbol;
         player.action(parseInt(cell.id));
         //removes cell from gameBoard array, for bot usage (splice, index, 1)
-        console.log(`removed ${parseInt(cell.id)} from array!`);
         gameBoard.gameArray.splice(index, 1);
-        console.log(player.array);
         //checks for winning condition
-        gameBoard.isWon(player);
-        gameBoard.isTie();
+        if (gameBoard.isWon(player)) {
+            text.textContent = `${player.win()}`;
+            gameEnd = true;
+        };
+
         if (gameEnd) {
-            console.log('game ending');
             return;
         }
         
@@ -120,17 +120,18 @@ const game = (() => {
 
         cell.textContent = player.symbol;
         player.action(parseInt(cell.id));
-        console.log(`removed ${parseInt(cell.id)} from array!`);
         gameBoard.gameArray.splice(index, 1);
 
-        gameBoard.isWon(player);
-        gameBoard.isTie();
+        if (gameBoard.isWon(player)) {
+            text.textContent = `${player.win()}`;
+            gameEnd = true;
+        };
+
         if (gameEnd) {
             return;
         }
         
         //function for next turn
-        console.log(`array is ${gameBoard.gameArray}`);
         nextPlayerTurn();
     }
 
@@ -171,14 +172,13 @@ const gameBoard = (() => {
 
     //check if winning condition reached
     function isWon(player) {
-        console.log('checking win');
         for (let i = 0; i < win.length; i++) {
             if (win[i].every(num => player.array.includes(num))) {
-                console.log('win!');
-                text.textContent = `${player.win()}`;
-                gameEnd = true;
+                return true;
             }
         }
+        isTie();
+        return false;
     }
 
     //if all squares filled and no winning condition, declare tie
