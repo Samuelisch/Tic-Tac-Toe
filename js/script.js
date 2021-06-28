@@ -100,7 +100,7 @@ const game = (() => {
         //removes cell from gameBoard array, for bot usage (splice, index, 1)
         gameBoard.gameArray.splice(index, 1);
         //checks for winning condition
-        if (gameBoard.isWon(player)) {
+        if (gameBoard.isWon(player.array)) {
             text.textContent = `${player.win()}`;
             gameEnd = true;
         };
@@ -115,14 +115,33 @@ const game = (() => {
 
     function botTurn() {
         const player = player2;
-        const cell = document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
+
+        function selectMove(player, gameArray) {
+            //copy existing moves left
+            let copyArray = [...gameArray];
+            //copy exisitng player's move
+            let copyPlayArray = [...player.array];
+            //iterate through each move
+            for (let i = 0; i < copyArray.length; i++) {
+                const cell = document.querySelector(`.cell[id="${copyArray[i]}"]`);
+                copyPlayArray.push(praseInt(cell.id));
+                //test if move will win
+                if (gameBoard.isWon(copyPlayArray)) {
+                    return copyArray[i];
+                }
+            }
+            //if no moves found, return random number from array
+            return document.querySelector(`.cell[id="${random(copyArray)}"]`);
+        }
+
+        const cell = selectMove(player, gameBoard.gameArray);
         const index = gameBoard.gameArray.indexOf(parseInt(cell.id));
 
         cell.textContent = player.symbol;
         player.action(parseInt(cell.id));
         gameBoard.gameArray.splice(index, 1);
 
-        if (gameBoard.isWon(player)) {
+        if (gameBoard.isWon(player.array)) {
             text.textContent = `${player.win()}`;
             gameEnd = true;
         };
@@ -171,9 +190,9 @@ const gameBoard = (() => {
     ];
 
     //check if winning condition reached
-    function isWon(player) {
+    function isWon(array) {
         for (let i = 0; i < win.length; i++) {
-            if (win[i].every(num => player.array.includes(num))) {
+            if (win[i].every(num => array.includes(num))) {
                 return true;
             }
         }
