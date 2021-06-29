@@ -93,42 +93,90 @@ const game = (() => {
 
     function botTurn() {
         const player = player2;
-        const botDifficulty = document.querySelector('input[name="difficulty"]:checked').value //easy, medium or hard
 
-        function difficulty() {
-            //EASY difficulty
-            if (botDifficulty == 'easy') {
-                console.log('easy');
-                return selectMove(player, gameBoard.gameArray) || document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
-            } else if (botDifficulty == 'hard') { //HARD difficulty
-                console.log('hard')
-                return selectMove(player, gameBoard.gameArray) 
-                    || selectMove(player1, gameBoard.gameArray) //if player1 has option to win, block player1's win
-                    || document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
-            } else { //IMPOSSIBLE difficulty
-                
-            }
-        }
-
-        function selectMove(player, gameArray) {
+        function winningMove(playerArray, gameArray) {
             //copy existing moves left
-            let copyArray = [...gameArray];
+            let copyGameArray = [...gameArray];
             //iterate through each move
-            for (let i = 0; i < copyArray.length; i++) {
+            for (let i = 0; i < copyGameArray.length; i++) {
                 //copy exisitng player's move
-                let copyPlayArray = [...player.array];
-                const cell = document.querySelector(`.cell[id="${copyArray[i]}"]`);
+                let copyPlayArray = [...playerArray];
+                const cell = document.querySelector(`.cell[id="${copyGameArray[i]}"]`);
                 copyPlayArray.push(parseInt(cell.id));
                 //test if move will win
                 if (gameBoard.isWon(copyPlayArray)) {
-                    return document.querySelector(`.cell[id="${copyArray[i]}"]`);
+                    return document.querySelector(`.cell[id="${copyGameArray[i]}"]`);
                 }
             }
             //if no winning moves found, block player's winning move if exists (HARD difficulty)
             return false;
         }
 
-        const cell = difficulty();
+        function filterDifficulty() {
+            const botDifficulty = document.querySelector('input[name="difficulty"]:checked').value //easy, medium or hard
+            //EASY difficulty
+            if (botDifficulty == 'easy') {
+                console.log('easy');
+                //if no winning move, return a random move
+                return winningMove(player.array, gameBoard.gameArray) || document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
+            } else if (botDifficulty == 'hard') { //HARD difficulty
+                console.log('hard')
+                //if no winning move, block opponent if they have a winning move, else return random move
+                return winningMove(player.array, gameBoard.gameArray) 
+                    || winningMove(player1.array, gameBoard.gameArray) //if player1 has option to win, block player1's win
+                    || document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
+            } /* else { //IMPOSSIBLE difficulty **UNDER CONSTRUCTION**
+                console.log('impossibru')
+
+                function minimax(playerOneArray, playerTwoArray, gameArray, is_max, depth) {
+                    //if there is a winner or tie, return appropriate actions
+                    if (winningMove(playerOneArray, gameArray) || winningMove(playerTwoArray, gameArray)) {
+                        if (winningMove(playerTwoArray, gameArray)) { // if bot wins, return maximum value
+                            return 100 - depth;
+                        } else if (winningMove(playerOneArray, gameArray)) { //if player wins, return minimum value
+                            return -100 + depth;
+                        }
+                        return 0; //else, return 0 for tie
+                    }
+                    
+                    if (is_max) {
+                        let best = -100;
+                        //loop through available moves
+                        gameBoard.gameArray.forEach(index => {
+                            const copyGameArray = [...gameArray]; //get copy of current array
+                            let copyPlayArray = [...playerOneArray]; //get copy of player array
+                            const cell = document.querySelector(`.cell[id="${copyArray[index]}"]`); //make move
+                            copyPlayArray.push(parseInt(cell.id));
+                            const nodeValue = minimax(copyPlayArray, playerTwoArray, copyGameArray, false, depth + 1);
+                            best = Math.max(best, nodeValue);
+                        });
+                        return best;
+                    }
+
+                    if (!is_max) {
+                        //best is highest value
+                        let best = 100;
+                        //loop through available moves
+                        gameBoard.gameArray.forEach(index => {
+                            const copyGameArray = [...gameArray]; //get copy of current array
+                            let copyPlayArray = [...playerTwoArray]; //get copy of player two array
+                            const cell = document.querySelector(`.cell[id="${copyArray[index]}"]`); //make move
+                            copyPlayArray.push(parseInt(cell.id));
+                            const nodeValue = minimax(playerOneArray, copyPlayArray, copyGameArray, true, depth + 1);
+                            best = Math.min(best, nodeValue);
+                        });
+                        return best;
+                    }
+                }
+
+                const choice = minimax(player1.array, player2.array, gameBoard.gameArray, false, 1);
+                return document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
+            }
+            */
+            
+        }
+
+        const cell = filterDifficulty();
 
         displayMove(player, cell);
     }
