@@ -176,11 +176,9 @@ const game = (() => {
             const botDifficulty = document.querySelector('input[name="difficulty"]:checked').value //easy, medium or hard
             //EASY difficulty
             if (botDifficulty == 'easy') {
-                console.log('easy');
                 //if no winning move, return a random move
                 return winningMove(player.array, gameBoard.gameArray) || document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
             } else if (botDifficulty == 'hard') { //HARD difficulty
-                console.log('hard')
                 //if no winning move, block opponent if they have a winning move, else return random move
                 return winningMove(player.array, gameBoard.gameArray) 
                     || winningMove(player1.array, gameBoard.gameArray) //if player1 has option to win, block player1's win
