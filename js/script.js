@@ -77,7 +77,6 @@ const game = (() => {
     //set action functions for each click event / player action to array (player.action(cellnum)
     function clicked(e) {
         const cell = e.target;
-        const index = gameBoard.gameArray.indexOf(parseInt(cell.id));
 
         //ignore if game is won or clicked on filled cell
         if (cell.textContent) {
@@ -88,23 +87,8 @@ const game = (() => {
         if (!playerOneFlag) {
             player = player2;
         }
-        //adds player symbol into grid cell, pushes cell id into array, and checks for win
-        cell.textContent = player.symbol;
-        player.action(parseInt(cell.id));
-        //removes cell from gameBoard array, for bot usage (splice, index, 1)
-        gameBoard.gameArray.splice(index, 1);
-        //checks for winning condition
-        if (gameBoard.isWon(player.array)) {
-            text.textContent = `${player.win()}`;
-            return;
-        }
 
-        if (gameBoard.isTie()) {
-            return;
-        }
-        
-        //function for next turn
-        nextPlayerTurn();
+        displayMove(player, cell);
     }
 
     function botTurn() {
@@ -112,16 +96,17 @@ const game = (() => {
         const botDifficulty = document.querySelector('input[name="difficulty"]:checked').value //easy, medium or hard
 
         function difficulty() {
+            //EASY difficulty
             if (botDifficulty == 'easy') {
                 console.log('easy');
                 return selectMove(player, gameBoard.gameArray) || document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
-            } else if (botDifficulty == 'hard') {
+            } else if (botDifficulty == 'hard') { //HARD difficulty
                 console.log('hard')
                 return selectMove(player, gameBoard.gameArray) 
                     || selectMove(player1, gameBoard.gameArray) //if player1 has option to win, block player1's win
                     || document.querySelector(`.cell[id="${random(gameBoard.gameArray)}"]`);
-            } else {
-                //impossible
+            } else { //IMPOSSIBLE difficulty
+                
             }
         }
 
@@ -144,18 +129,26 @@ const game = (() => {
         }
 
         const cell = difficulty();
-        const index = gameBoard.gameArray.indexOf(parseInt(cell.id));
-        
-        cell.textContent = player.symbol;
-        player.action(parseInt(cell.id));
-        gameBoard.gameArray.splice(index, 1);
 
+        displayMove(player, cell);
+    }
+
+    function displayMove(player, cell) {
+        const index = gameBoard.gameArray.indexOf(parseInt(cell.id));
+        //adds player symbol into grid cell, pushes cell id into array, and checks for win
+        cell.textContent = player.symbol;
+        //adds cell into player array
+        player.action(parseInt(cell.id));
+        //removes selected cell from available choices
+        gameBoard.gameArray.splice(index, 1);
+        //checks if choice made player won or gametie
         if (gameBoard.isWon(player.array)) {
             text.textContent = `${player.win()}`;
             return;
         }
 
-        if (gameBoard.isTie()) {
+        if (!gameBoard.gameArray.length) {
+            text.textContent = "It's a tie!"
             return;
         }
         
@@ -224,18 +217,9 @@ const gameBoard = (() => {
         return false;
     }
 
-    //if all squares filled and no winning condition, declare tie
-    function isTie() {
-        if (!gameArray.length) {
-            text.textContent = "It's a tie!"
-            return true;
-        }
-        return false;
-    }
-
     restart.addEventListener('click', reset);
 
-    return{start, reset, isWon, isTie, gameArray};
+    return{start, reset, isWon, gameArray};
 })();
 
 gameBoard.start();
