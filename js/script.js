@@ -27,9 +27,11 @@ const formBoard = (() => {
     const form = document.querySelector('form');
     const configBtn = document.querySelector('.configure-btn');
     const submitBtn = document.querySelector('.submit-btn');
+    const aiBtn = document.querySelector('#ai');
 
     function formSubmit(e) {
         e.preventDefault();
+        unHighlight();
         form.classList.toggle('display-form');
         const playerOneName = document.getElementById('name1').value;
         const playerTwoName = document.getElementById('name2').value;
@@ -39,9 +41,67 @@ const formBoard = (() => {
     }
 
     function dropForm() {
-        form.classList.toggle('display-form');
+        const highlight = document.querySelector('.highlight');
+        if (form.classList.contains('display-form')) {
+            unHighlight();
+            form.classList.remove('display-form')
+        } else {
+            form.classList.add('display-form');
+            if (aiBtn.checked) {
+                highlightDifficulty();
+            }
+        }
     }
 
+    function highlightDifficulty() {
+        const triggers = document.querySelectorAll('.select-difficulty');
+        const highlight = document.createElement('span');
+        highlight.classList.add('highlight');
+        document.body.append(highlight);
+
+        function highlightWord() {
+            const wordCoords = this.getBoundingClientRect();
+
+            const coords = {
+                width: wordCoords.width,
+                height: wordCoords.height,
+                top: wordCoords.top + window.scrollY,
+                left: wordCoords.left + window.scrollX
+            };
+
+            highlight.style.width = `${coords.width}px`;
+            highlight.style.height = `${coords.height}px`;
+            highlight.style.transform = `translate(${coords.left}px, ${coords.top}px)`;
+        }
+
+        const firstCoords = document.querySelector('label[for="easy"]').getBoundingClientRect();
+        const firstCoordsObj = {
+            width: firstCoords.width,
+            height: firstCoords.height,
+            top: firstCoords.top + window.scrollY,
+            left: firstCoords.left + window.scrollX
+        }
+        highlight.style.width = `${firstCoordsObj.width}px`;
+        highlight.style.height = `${firstCoordsObj.height}px`;
+        highlight.style.transform = `translate(${firstCoordsObj.left}px, ${firstCoordsObj.top}px)`;
+
+        triggers.forEach(trigger => trigger.addEventListener('click', highlightWord));
+    }
+
+    function unHighlight() {
+        const highlight = document.querySelector('.highlight');
+        if (highlight) {
+            highlight.remove();
+        }
+    }
+
+    aiBtn.addEventListener('change', function() {
+        if (this.checked) {
+            highlightDifficulty();
+        } else {
+            unHighlight();
+        }
+    });
     submitBtn.addEventListener('click', formSubmit);
     configBtn.addEventListener('click', dropForm);
 })();
